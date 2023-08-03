@@ -2,11 +2,21 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+const { jwtMiddleware, protectedRoute } = require('./protection-middlewares');
+const { featureFlag } = require('./feature-flag-middleware');
+
+// First middleware that decodes tokens for all endpoints globally
+app.use("*", jwtMiddleware);
+
+// Restrict all endpoints globally with protectedRoute to require authenticated users
+app.use("*", protectedRoute({ privileges: 'AUTHENTICATED' }));
+
 app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
-app.get('/getData', (req, res) => {
+// Get data now uses flag "analytics"
+app.get('/getData', featureFlag({ flag: "analytics" }), (req, res) => {
     res.send(_randomFill(3, 0, 1));
 })
 
