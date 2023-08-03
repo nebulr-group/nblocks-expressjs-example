@@ -1,0 +1,43 @@
+{
+  "name": "nblocks-expressjs-example",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "target": "dev",
+    "context": ".."
+  },
+  "containerEnv": {},
+  "runArgs": [
+    // "--network=nblocks-stack_shared-network", Connect into the nblocks stack network
+    // "--publish=0.0.0.0:3000:3000" Expose the container to external machines on LAN
+  ],
+  "customizations": {
+    "vscode": {
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "kumar-harsh.graphql-for-vscode",
+        "pkief.material-icon-theme",
+        "esbenp.prettier-vscode",
+        "mikestead.dotenv",
+        "redhat.vscode-yaml"
+      ],
+      "settings": {
+        "terminal.integrated.profiles.shell.linux": "/bin/bash"
+      }
+    }
+  },
+  //this improves container performance
+  "mounts": [],
+  "workspaceMount": "source=${localWorkspaceFolder},target=/app,type=bind",
+  "workspaceFolder": "/app",
+  "postCreateCommand": "bash .devcontainer/init.sh ${containerWorkspaceFolder}"
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // "forwardPorts": [],
+  // Use 'postCreateCommand' to run commands after the container is created.
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // "forwardPorts": [],
+  // Use 'postCreateCommand' to run commands after the container is created.
+  // "postCreateCommand": "yarn install",
+  // Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
+  // "remoteUser": "node"
+}
