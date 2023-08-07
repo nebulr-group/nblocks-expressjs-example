@@ -4,7 +4,7 @@ const app = express()
 const port = 3000
 
 const { jwtMiddleware, protectedRoute } = require('./protection-middlewares');
-
+const { featureFlag } = require('./feature-flag-middleware');
 
 app.use(cors())
 // First middleware that decodes tokens for all endpoints globally
@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 })
 
 // Get data now uses flag "analytics"
-app.get('/getData', (req, res) => {
+app.get('/getData', featureFlag({ flag: "analytics" }), (req, res) => {
     res.send(_randomFill(3, 0, 1));
 })
 
